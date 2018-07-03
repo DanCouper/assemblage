@@ -10,6 +10,15 @@
   <body>
     <header class="main__header">
       <h1 class="main__branding">Gameserver</h1>
+      <section class="main__meta">
+        <%= if @current_user do %>
+          <p><%= @current_user.username %></p>
+          <p><%= link "Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete" %></p>
+        <% else %>
+          <p><%= link "Register", to: Routes.user_path(@conn, :new) %></p>
+          <p><%= link "Log in", to: Routes.session_path(@conn, :new) %></p>
+        <% end %>
+      </section>
     </header>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

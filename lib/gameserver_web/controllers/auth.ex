@@ -44,6 +44,15 @@ defmodule GameserverWeb.Auth do
   end
 
   @doc """
+  Simply drops the whole session. NOTE if the session needed to be
+  held onto, then just deleting `delete_session(conn, :user_id)` would
+  be a better bet.
+  """
+  def logout(conn) do
+    configure_session(conn, drop: true)
+  end
+
+  @doc """
   Second requirement:
 
   Checks if a `:user_id` is stored in the session, and if so,
