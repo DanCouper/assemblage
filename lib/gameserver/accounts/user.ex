@@ -1,3 +1,10 @@
 defmodule Gameserver.Accounts.User do
-  defstruct [:id, :name, :username]
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "users" do
+    field :username, :string
+
+    timestamps()
+  end
 end

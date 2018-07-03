@@ -7,9 +7,9 @@ defmodule Gameserver.Accounts do
 
   def list_users do
     [
-      %User{id: "1", name: "José", username: "josevalim"},
-      %User{id: "2", name: "Bruce", username: "redrapids"},
-      %User{id: "3", name: "Chris", username: "chrismccord"}
+      %User{id: "1", username: "josevalim"},
+      %User{id: "2", username: "redrapids"},
+      %User{id: "3", username: "chrismccord"}
     ]
   end
 
