@@ -26,9 +26,23 @@ defmodule Gameserver.Accounts do
     User.changeset(user, %{})
   end
 
+  @doc """
+  Creates a user directly, bypassing any authorization step/s.
+  To be used for _eg_ seeding a DB.
+  """
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a user, taking into account any authorization step/s.
+  For use on a web client, for actual user journeys.
+  """
+  def register_user(attrs \\ %{}) do
+    %User{}
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
 
