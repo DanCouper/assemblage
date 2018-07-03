@@ -7,6 +7,7 @@ defmodule GameserverWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug GameserverWeb.Auth
   end
 
   pipeline :api do

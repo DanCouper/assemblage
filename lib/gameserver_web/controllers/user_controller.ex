@@ -1,5 +1,6 @@
 defmodule GameserverWeb.UserController do
   use GameserverWeb, :controller
+  plug :authenticate when action in [:index, :show]
 
   alias Gameserver.Accounts
   alias Gameserver.Accounts.User
@@ -23,11 +24,24 @@ defmodule GameserverWeb.UserController do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
+        |> GameserverWeb.Auth.login(user)
         |> put_flash(:info, "#{user.username} created!")
         |> redirect(to: Routes.user_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "new.html", changeset: changeset)
-      end
     end
+  end
+
+  # This is a function plug. It's using the Auth module plug.
+  defp authenticate(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged in to view that page")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
 end
