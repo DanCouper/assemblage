@@ -32,6 +32,18 @@ defmodule GameserverWeb.Auth do
   end
 
   @doc """
+  Attempts to authenticate then log in, deferring to the relevant context module
+  for the auth logic.
+  """
+  def login_by_email_and_pass(conn, email, given_pass) do
+    case Accounts.authenticate_by_email_and_pass(email, given_pass) do
+      {:ok, user} -> {:ok, login(conn, user)}
+      {:error, :unauthorised} -> {:error, :unauthorised, conn}
+      {:error, :not_found} -> {:error, :not_found, conn}
+    end
+  end
+
+  @doc """
   Second requirement:
 
   Checks if a `:user_id` is stored in the session, and if so,

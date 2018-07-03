@@ -2,9 +2,42 @@ defmodule Gameserver.Accounts do
   @moduledoc """
   The user accounts context.
   """
+  import Ecto.Query
 
   alias Gameserver.Accounts.User
   alias Gameserver.Repo
+
+  @doc """
+  Given an email, look up a user that matches, and preload the
+  `:credential` field if there's a match.
+  """
+  def get_user_by_email(email) do
+    from(u in User, join: c in assoc(u, :credential), where: c.email == ^email)
+    |> Repo.one()
+    |> Repo.preload(:credential)
+  end
+
+  @doc """
+  Given an email and a password, first attempt a lookup based on the email.
+  If that is successful, check the password & return :ok if we're good, and
+  an :error if not.
+
+  If no user is found, simulate a password check to deter timing attacks, before
+  returning an error.
+  """
+  def authenticate_by_email_and_pass(email, given_pass) do
+    user = get_user_by_email(email)
+
+    cond do
+      user && Comeonin.Bcrypt.checkpw(given_pass, user.credential.password_hash) ->
+        {:ok, user}
+      user ->
+        {:error, :unauthorised}
+      true ->
+        Comeonin.Bcrypt.dummy_checkpw()
+        {:error, :not_found}
+    end
+  end
 
   def get_user(id) do
     Repo.get(User, id)

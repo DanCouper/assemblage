@@ -19,6 +19,7 @@ defmodule GameserverWeb.Router do
 
     get "/", PageController, :index
     resources "/users", UserController, only: [:index, :show, :new, :create]
+    resources "/session", SessionController, only: [:new, :create, :delete]
   end
 
   # Other scopes may use custom stacks.
