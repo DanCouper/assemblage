@@ -1,4 +1,4 @@
-defmodule Gameserver.DataCase do
+defmodule Assemblage.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Gameserver.DataCase do
 
   using do
     quote do
-      alias Gameserver.Repo
+      alias Assemblage.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Gameserver.DataCase
+      import Assemblage.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Gameserver.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Assemblage.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Gameserver.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Assemblage.Repo, {:shared, self()})
     end
 
     :ok

@@ -1,3 +1,3 @@
-defmodule GameserverWeb.LayoutViewTest do
-  use GameserverWeb.ConnCase, async: true
+defmodule AssemblageWeb.LayoutViewTest do
+  use AssemblageWeb.ConnCase, async: true
 end

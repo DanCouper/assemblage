@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :gameserver, GameserverWeb.Endpoint,
+config :assemblage, AssemblageWeb.Endpoint,
   http: [port: 5000],
   debug_errors: true,
   code_reloader: true,
@@ -31,13 +31,13 @@ config :gameserver, GameserverWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :gameserver, GameserverWeb.Endpoint,
+config :assemblage, AssemblageWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/gameserver_web/views/.*(ex)$},
-      ~r{lib/gameserver_web/templates/.*(eex)$}
+      ~r{lib/assemblage_web/views/.*(ex)$},
+      ~r{lib/assemblage_web/templates/.*(eex)$}
     ]
   ]
 
@@ -52,9 +52,9 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
-config :gameserver, Gameserver.Repo,
+config :assemblage, Assemblage.Repo,
   username: "postgres",
   password: "postgres",
-  database: "gameserver_dev",
+  database: "assemblage_dev",
   hostname: "localhost",
   pool_size: 10

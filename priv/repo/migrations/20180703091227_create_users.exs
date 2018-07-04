@@ -1,4 +1,4 @@
-defmodule Gameserver.Repo.Migrations.CreateUsers do
+defmodule Assemblage.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do

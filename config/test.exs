@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :gameserver, GameserverWeb.Endpoint,
+config :assemblage, AssemblageWeb.Endpoint,
   http: [port: 5001],
   server: false
 
@@ -10,9 +10,9 @@ config :gameserver, GameserverWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :gameserver, Gameserver.Repo,
+config :assemblage, Assemblage.Repo,
   username: "postgres",
   password: "postgres",
-  database: "gameserver_test",
+  database: "assemblage_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

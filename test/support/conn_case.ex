@@ -1,4 +1,4 @@
-defmodule GameserverWeb.ConnCase do
+defmodule AssemblageWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule GameserverWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      alias GameserverWeb.Router.Helpers, as: Routes
+      alias AssemblageWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint GameserverWeb.Endpoint
+      @endpoint AssemblageWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Gameserver.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Assemblage.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Gameserver.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Assemblage.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end

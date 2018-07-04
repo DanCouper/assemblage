@@ -5,7 +5,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Gameserver.Repo.insert!(%Gameserver.SomeSchema{})
+#     Assemblage.Repo.insert!(%Assemblage.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.

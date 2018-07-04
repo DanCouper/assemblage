@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :gameserver,
-  ecto_repos: [Gameserver.Repo]
+config :assemblage,
+  ecto_repos: [Assemblage.Repo]
 
 # Configures the endpoint
-config :gameserver, GameserverWeb.Endpoint,
+config :assemblage, AssemblageWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "4I+W1YYrxGjKr94m1RAEtcWCT/9QqyS/yEgraDppBFpNHTp48pj0O0CKLh9bWl8J",
-  render_errors: [view: GameserverWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Gameserver.PubSub,
+  render_errors: [view: AssemblageWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Assemblage.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

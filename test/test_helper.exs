@@ -1,4 +1,4 @@
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Gameserver.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Assemblage.Repo, :manual)
 

@@ -1,0 +1,4 @@
+<section class="phx-hero">
+  <h2><%= gettext "Welcome to %{name}!", name: "Assemblage" %></h2>
+  <p>Welcome to the assemblage.</p>
+</section>

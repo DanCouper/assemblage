@@ -1,10 +1,10 @@
-defmodule Gameserver.AccountsTest do
-  use Gameserver.DataCase
+defmodule Assemblage.AccountsTest do
+  use Assemblage.DataCase
 
-  alias Gameserver.Accounts
+  alias Assemblage.Accounts
 
   describe "credentials" do
-    alias Gameserver.Accounts.Credential
+    alias Assemblage.Accounts.Credential
 
     @valid_attrs %{email: "some email", password_hash: "some password_hash"}
     @update_attrs %{email: "some updated email", password_hash: "some updated password_hash"}
@@ -42,7 +42,7 @@ defmodule Gameserver.AccountsTest do
     test "update_credential/2 with valid data updates the credential" do
       credential = credential_fixture()
       assert {:ok, %Credential{} = credential} = Accounts.update_credential(credential, @update_attrs)
-      
+
       assert credential.email == "some updated email"
       assert credential.password_hash == "some updated password_hash"
     end

@@ -1,5 +1,5 @@
-defmodule GameserverWeb.PageControllerTest do
-  use GameserverWeb.ConnCase
+defmodule AssemblageWeb.PageControllerTest do
+  use AssemblageWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
