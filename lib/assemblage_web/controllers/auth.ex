@@ -7,15 +7,31 @@ defmodule AssemblageWeb.Auth do
   2. Check if there's a new user in the session and
   store the ID in `conn.assigns` for incoming requests
   so that it can be accessed in controllers and views.
-
-  This plug covers the second part.
   """
   import Plug.Conn
+  import Phoenix.Controller
+  alias AssemblageWeb.Router.Helpers, as: Routes
 
   alias Assemblage.Accounts
 
   @doc false
   def init(opts), do: opts
+
+  @doc """
+  A function plug, defined here to allow it to be
+  shared between all routers and controllers, rather than
+  just keeping it in the `UserController`.
+  """
+  def authenticate_user(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged in to view that page")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
 
   @doc """
   First requirement:

@@ -1,6 +1,8 @@
 defmodule AssemblageWeb.UserController do
   use AssemblageWeb, :controller
-  plug :authenticate when action in [:index, :show]
+  # The authenticate_user function plug in action, imported from
+  # the auth module plug (in `assemblage_web.ex`)
+  plug :authenticate_user when action in [:index, :show]
 
   alias Assemblage.Accounts
   alias Assemblage.Accounts.User
@@ -30,18 +32,6 @@ defmodule AssemblageWeb.UserController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "new.html", changeset: changeset)
-    end
-  end
-
-  # This is a function plug. It's using the Auth module plug.
-  defp authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to view that page")
-      |> redirect(to: Routes.page_path(conn, :index))
-      |> halt()
     end
   end
 end

@@ -2,12 +2,13 @@ defmodule Assemblage.Multimedia.Image do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Assemblage.Accounts.User
 
   schema "images" do
     field :description, :string
     field :full_src, :string
     field :title, :string
-    field :user_id, :id
+    belongs_to :user, User
 
     timestamps()
   end

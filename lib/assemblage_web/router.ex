@@ -22,8 +22,9 @@ defmodule AssemblageWeb.Router do
     resources "/session", SessionController, only: [:new, :create, :delete]
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AssemblageWeb do
-  #   pipe_through :api
-  # end
+  scope "/manage", AssemblageWeb do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/images", ImageController
+  end
 end

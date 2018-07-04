@@ -4,8 +4,8 @@ defmodule Assemblage.Multimedia do
   """
 
   import Ecto.Query, warn: false
+  alias Assemblage.Accounts
   alias Assemblage.Repo
-
   alias Assemblage.Multimedia.Image
 
   @doc """
@@ -18,7 +18,16 @@ defmodule Assemblage.Multimedia do
 
   """
   def list_images do
-    Repo.all(Image)
+    Image
+    |> Repo.all()
+    |> preload_user()
+  end
+
+  def list_user_images(%Accounts.User{} = user) do
+    Image
+    |> user_images_query(user)
+    |> Repo.all()
+    |> preload_user()
   end
 
   @doc """
@@ -35,8 +44,15 @@ defmodule Assemblage.Multimedia do
       ** (Ecto.NoResultsError)
 
   """
-  def get_image!(id), do: Repo.get!(Image, id)
+  def get_image!(id), do: preload_user(Repo.get!(Image, id))
 
+
+  def get_user_image!(%Accounts.User{} = user, id) do
+    from(i in Image, where: i.id == ^id)
+    |> user_images_query(user)
+    |> Repo.one!()
+    |> preload_user()
+  end
   @doc """
   Creates a image.
 
@@ -49,9 +65,10 @@ defmodule Assemblage.Multimedia do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_image(attrs \\ %{}) do
+  def create_image(%Accounts.User{} = user, attrs \\ %{}) do
     %Image{}
     |> Image.changeset(attrs)
+    |> put_user(user)
     |> Repo.insert()
   end
 
@@ -98,7 +115,21 @@ defmodule Assemblage.Multimedia do
       %Ecto.Changeset{source: %Image{}}
 
   """
-  def change_image(%Image{} = image) do
-    Image.changeset(image, %{})
+  def change_image(%Accounts.User{} = user, %Image{} = image) do
+    image
+    |> Image.changeset(%{})
+    |> put_user(user)
+  end
+
+  defp preload_user(image_or_images) do
+    Repo.preload(image_or_images, :user)
+  end
+
+  defp put_user(changeset, user) do
+    Ecto.Changeset.put_assoc(changeset, :user, user)
+  end
+
+  defp user_images_query(query, %Accounts.User{id: user_id}) do
+    from(i in query, where: i.user_id == ^user_id)
   end
 end
