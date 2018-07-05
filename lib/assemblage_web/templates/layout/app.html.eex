@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
   <body>
-    <header class="main__header">
-      <h1 class="main__branding">Assemblage</h1>
-      <section class="main__meta">
+    <header class="main__wrapper main__header">
+      <h1 class="main__header__branding">Assemblage</h1>
+      <section class="main__header__meta">
         <%= if @current_user do %>
           <p><%= @current_user.username %></p>
           <p><%= link "Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete" %></p>
@@ -20,12 +20,12 @@
         <% end %>
       </section>
     </header>
-    <main role="main" class="container">
+    <main class="main__wrapper main__content">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
-    <footer class="main__footer">
+    <footer class="main__wrapper main__footer">
       <p>Some footer stuff</p>
     </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
