@@ -44,6 +44,9 @@ defmodule Assemblage.MixProject do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.0"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_ecto, "~> 0.1"},
+      {:absinthe_plug, "~> 1.4"},
     ]
   end
 
