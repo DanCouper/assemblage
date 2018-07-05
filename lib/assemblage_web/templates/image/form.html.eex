@@ -17,6 +17,10 @@
   <%= textarea f, :description %>
   <%= error_tag f, :description %>
 
+  <%= label f, :collection_id, "Collection"%>
+  <%= select f, :collection_id, collection_select_options(@collections),
+    prompt: "Choose a collection" %>
+
   <div>
     <%= submit "Save" %>
   </div>

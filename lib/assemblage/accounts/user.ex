@@ -22,5 +22,6 @@ defmodule Assemblage.Accounts.User do
     |> cast(attrs, [:username])
     |> validate_required([:username])
     |> validate_length(:username, min: 1, max: 40)
+    |> unique_constraint(:username)
   end
 end

@@ -14,6 +14,17 @@ defmodule Assemblage.Multimedia do
   alias Assemblage.Accounts.User
   alias Assemblage.Repo
   alias Assemblage.Multimedia.Image
+  alias Assemblage.Multimedia.Collection
+
+  def create_collection(name) do
+    Repo.get_by(Collection, name: name) || Repo.insert!(%Collection{name: name})
+  end
+
+  def list_alphabetical_collections do
+    Collection
+    |> Collection.alphabetical()
+    |> Repo.all()
+  end
 
   @doc """
   Returns the list of all images.

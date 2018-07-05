@@ -4,6 +4,14 @@ defmodule AssemblageWeb.ImageController do
   alias Assemblage.Multimedia
   alias Assemblage.Multimedia.Image
 
+  plug :load_collections when action in [:new, :create, :edit, :update]
+
+  # By loading in all the collections, they can then be used to populate the
+  # UI when creating/editing/viewing etc.
+  defp load_collections(conn, _) do
+    assign(conn, :collections, Multimedia.list_alphabetical_collections)
+  end
+
   @doc """
   This overrides the default `action` callback
   that the controller defines. This simply adds the
@@ -14,6 +22,8 @@ defmodule AssemblageWeb.ImageController do
     args = [conn, conn.params, conn.assigns.current_user]
     apply(__MODULE__, action_name(conn), args)
   end
+
+  ###
 
   def index(conn, _params, current_user) do
     images = Multimedia.list_user_images(current_user)
