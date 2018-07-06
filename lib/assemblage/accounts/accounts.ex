@@ -7,6 +7,17 @@ defmodule Assemblage.Accounts do
   alias Assemblage.Accounts.User
   alias Assemblage.Repo
 
+
+  @doc """
+  Given an ID, look up the user that matches and preload
+  the `:credential` field if there's a match.
+  """
+  def get_user_by_id(id) do
+    User
+    |> Repo.get(id)
+    |> Repo.preload(:credential)
+  end
+
   @doc """
   Given an email, look up a user that matches, and preload the
   `:credential` field if there's a match.
@@ -39,6 +50,7 @@ defmodule Assemblage.Accounts do
     end
   end
 
+  # FIXME either use this or delete it all
   def get_user(id) do
     Repo.get(User, id)
   end
@@ -58,6 +70,7 @@ defmodule Assemblage.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+  # END FIXME
 
   @doc """
   Creates a user directly, bypassing any authorization step/s.
@@ -79,6 +92,7 @@ defmodule Assemblage.Accounts do
     |> Repo.insert()
   end
 
+  # FIXME delete all of this??
   alias Assemblage.Accounts.Credential
 
   @doc """
@@ -174,4 +188,5 @@ defmodule Assemblage.Accounts do
   def change_credential(%Credential{} = credential) do
     Credential.changeset(credential, %{})
   end
+  # END FIXME
 end

@@ -14,6 +14,9 @@ defmodule AssemblageWeb.Auth do
 
   alias Assemblage.Accounts
 
+  @user_salt "user_salt"
+  @max_token_lifespan 365 * 24 * 3600
+
   @doc false
   def init(opts), do: opts
 
@@ -79,5 +82,16 @@ defmodule AssemblageWeb.Auth do
     user_id = get_session(conn, :user_id)
     user = user_id && Accounts.get_user(user_id)
     assign(conn, :current_user, user)
+  end
+
+  @doc """
+  ALTERNATIVELY, just sign, baby
+  """
+  def sign(data) do
+    Phoenix.Token.sign(AssemblageWeb.Endpoint, @user_salt, data)
+  end
+
+  def verify(token) do
+    Phoenix.Token.verify(AssemblageWeb.Endpoint, @user_salt, token, max_age: @max_token_lifespan)
   end
 end

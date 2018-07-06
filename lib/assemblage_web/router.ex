@@ -12,6 +12,15 @@ defmodule AssemblageWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug AssemblageWeb.Context
+  end
+
+  scope "/api" do
+    pipe_through :api
+
+    forward("/test", Absinthe.Plug, schema: AssemblageWeb.Schema)
+
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: AssemblageWeb.Schema)
   end
 
   scope "/", AssemblageWeb do

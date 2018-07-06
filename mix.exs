@@ -44,9 +44,13 @@ defmodule Assemblage.MixProject do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:absinthe, "~> 1.4"},
-      {:absinthe_ecto, "~> 0.1"},
-      {:absinthe_plug, "~> 1.4"},
+      {:absinthe, github: "absinthe-graphql/absinthe", override: true},
+      {:absinthe_plug, github: "absinthe-graphql/absinthe_plug", override: true},
+      {:absinthe_ecto, github: "absinthe-graphql/absinthe_ecto"},
+      # This no workee?
+      {:absinthe_phoenix, github: "absinthe-graphql/absinthe_phoenix"},
+      # Just to actually let Absinthe work - Phoenix is now using Jason
+      {:poison, "~> 3.1"},
     ]
   end
 

@@ -13,7 +13,7 @@ defmodule AssemblageWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Accounts.get_user(id)
+    user = Accounts.get_user_by_id(id)
     render(conn, "show.html", user: user)
   end
 

@@ -1,3 +1,69 @@
-/* This file is for your main application css. */
+/***************************************************
+ * Assemblage
+ *
+ * Core styling for Assemblage
+ ***************************************************/
 
-@import "./phoenix.css";
+/***************************************************
+ * VARIABLES AND IMPORTS
+ ***************************************************/
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #000000;
+  --secondary-color: #000000;
+  --heading-color: #000000;
+  --link-color: #000000;
+  --border-color: #000000;
+
+  --primary-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --secondary-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --numeric-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/***************************************************
+ * BASE - Resets and core styling
+ ***************************************************/
+
+/*! minireset.css v0.0.3 | MIT License | github.com/jgthms/minireset.css */
+blockquote,body,dd,dl,dt,fieldset,figure,h1,h2,h3,h4,h5,h6,hr,html,iframe,legend,li,ol,p,pre,textarea,ul{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:400}ul{list-style:none}button,input,select,textarea{margin:0}html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}audio,embed,iframe,img,object,video{height:auto;max-width:100%}iframe{border:0}table{border-collapse:collapse;border-spacing:0}td,th{padding:0;text-align:left}
+
+body {
+  /* Base typography */
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--primary-font-stack);
+  line-height: 1.3;
+  /* Base layout */
+  display: grid;
+  grid-template-areas: "main__header" "main__content" "main__footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+/***************************************************
+ * MODULES - Main content blocks
+ ***************************************************/
+
+.main__wrapper {
+  padding: 1rem;
+}
+
+.main__header {
+  display: flex;
+}
+
+.main__header__branding {
+  flex: 1;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.main__content {
+  /* display: grid; */
+}
+
+.main__footer {
+  /* display: flex; */
+}

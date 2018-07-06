@@ -174,6 +174,7 @@ defmodule Assemblage.Multimedia do
     Ecto.Changeset.put_assoc(changeset, :user, user)
   end
 
+
   # Ensure images returned belong to a specific user.
   defp user_images_query(query, %User{id: user_id}) do
     from(i in query, where: i.user_id == ^user_id)
