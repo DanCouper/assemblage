@@ -4,6 +4,7 @@ defmodule AssemblageWeb.Schema do
   alias Assemblage.Repo
   alias Assemblage.Multimedia
   alias AssemblageWeb.Resolvers
+  alias AssemblageWeb.Schema.Middleware
 
   import_types AssemblageWeb.Schema.{AccountsTypes, MultimediaTypes}
 
@@ -13,15 +14,14 @@ defmodule AssemblageWeb.Schema do
       arg :password, non_null(:string)
       resolve &Resolvers.Accounts.login/3
     end
+
+    field :logout, :boolean do
+      middleware(Middleware.Auth)
+      resolve &Resolvers.Accounts.logout/3
+    end
   end
 
   query do
-    @desc "The scope that a user can access - anything that lives in this scope uses `:me` as the gatekeeper."
-    field :me, :user do
-      middleware Middleware.Authorize, :any
-      resolve &Resolvers.Accounts.me/3
-    end
-
     @desc "All available images"
     field :images, list_of(:image)  do
       resolve fn _, _, _ ->

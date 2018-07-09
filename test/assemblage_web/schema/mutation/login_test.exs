@@ -21,6 +21,6 @@ defmodule Assemblage.Schema.Mutation.LoginTest do
 
     assert %{"username" => user.username } == user_data
 
-    assert {:ok, %{id: user.id}} == AssemblageWeb.Auth.verify(token)
+    assert {:ok, %{id: user.id}} == AssemblageWeb.Context.verify(token)
   end
 end

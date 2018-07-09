@@ -50,6 +50,20 @@ defmodule Assemblage.Accounts do
     end
   end
 
+  def store_access_token(%User{} = user, token) do
+    user
+    |> User.changeset(%{access_token: token})
+    |> Repo.update()
+  end
+
+  def revoke_access_token(%User{} = user) do
+    user
+    |> User.changeset(%{access_token: nil})
+    |> Repo.update()
+  end
+
+
+
   # FIXME either use this or delete it all
   def get_user(id) do
     Repo.get(User, id)

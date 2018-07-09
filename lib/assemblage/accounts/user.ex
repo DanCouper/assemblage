@@ -6,6 +6,7 @@ defmodule Assemblage.Accounts.User do
 
   schema "users" do
     field :username, :string
+    field :access_token, :string
     has_one :credential, Credential
 
     timestamps()
