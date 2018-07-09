@@ -7,7 +7,8 @@ use Mix.Config
 
 # General application configuration
 config :assemblage,
-  ecto_repos: [Assemblage.Repo]
+  ecto_repos: [Assemblage.Repo],
+  web_endpoint: AssemblageWeb.Endpoint
 
 # Configures the endpoint
 config :assemblage, AssemblageWeb.Endpoint,
