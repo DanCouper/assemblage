@@ -46,11 +46,11 @@ defmodule Assemblage.MixProject do
       {:bcrypt_elixir, "~> 1.0"},
       {:absinthe, github: "absinthe-graphql/absinthe", override: true},
       {:absinthe_plug, github: "absinthe-graphql/absinthe_plug", override: true},
+      # Not usre if this will be needed at all, but hey ho:
       {:absinthe_ecto, github: "absinthe-graphql/absinthe_ecto"},
-      # This no workee?
       {:absinthe_phoenix, github: "absinthe-graphql/absinthe_phoenix"},
       # Just to actually let Absinthe work - Phoenix is now using Jason
-      {:poison, "~> 3.1"},
+      # {:poison, "~> 3.1"},
     ]
   end
 

@@ -11,13 +11,7 @@
     <header class="main__wrapper main__header">
       <h1 class="main__header__branding">Assemblage</h1>
       <section class="main__header__meta">
-        <%= if @current_user do %>
-          <p><%= @current_user.username %></p>
-          <p><%= link "Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete" %></p>
-        <% else %>
-          <p><%= link "Register", to: Routes.user_path(@conn, :new) %></p>
-          <p><%= link "Log in", to: Routes.session_path(@conn, :new) %></p>
-        <% end %>
+        <p>Some header meta stuff</p>
       </section>
     </header>
     <main class="main__wrapper main__content">

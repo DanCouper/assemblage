@@ -23,7 +23,6 @@ defmodule AssemblageWeb do
 
       import Plug.Conn
       import AssemblageWeb.Gettext
-      import AssemblageWeb.Auth, only: [authenticate_user: 2]
       alias AssemblageWeb.Router.Helpers, as: Routes
     end
   end
@@ -50,7 +49,6 @@ defmodule AssemblageWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-      import AssemblageWeb.Auth, only: [authenticate_user: 2]
     end
   end
 
