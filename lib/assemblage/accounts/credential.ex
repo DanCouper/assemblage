@@ -23,6 +23,26 @@ defmodule Assemblage.Accounts.Credential do
     |> put_password_hash()
   end
 
+  # Discrete operation to update email: to do so a user
+  # will need to go through security measures, makes sense to
+  # keep  the changeset functionality atomic.
+  def update_changeset(credential, %{email: email} = params) do
+    credential
+    |> cast(params, [:email])
+    |> unique_constraint(:email, downcase: true)
+    |> put_change(:email, email)
+  end
+
+  # Discrete operation to update password: to do so a user
+  # will need to go through security measures, makes sense to
+  # keep  the changeset functionality atomic.
+  def update_changeset(credential, %{password: _} = params) do
+    credential
+    |> cast(params, [:password])
+    |> validate_length(:password, min: 6, max: 100)
+    |> put_password_hash()
+  end
+
   # If valid, hash the value of the virtual password field and put that
   # in the changeset.
   defp put_password_hash(changeset) do

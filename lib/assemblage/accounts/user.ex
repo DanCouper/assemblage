@@ -9,7 +9,7 @@ defmodule Assemblage.Accounts.User do
     field :name, :string
     # NOTE just keep as `has_one` until want to
     # test/implement other methods.
-    has_one :credential, Credential
+    has_one :credential, Credential, on_replace: :update
     has_one :auth_token, AuthToken
     timestamps()
   end
@@ -18,6 +18,12 @@ defmodule Assemblage.Accounts.User do
     user
     |> changeset(params)
     |> cast_assoc(:credential, with: &Credential.changeset/2, required: true)
+  end
+
+  def update_changeset(user, params) do
+    user
+    |> changeset(params)
+    |> cast_assoc(:credential, with: &Credential.update_changeset/2, required: true)
   end
 
   @doc false

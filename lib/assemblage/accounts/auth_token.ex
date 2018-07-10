@@ -17,7 +17,7 @@ defmodule Assemblage.Accounts.AuthToken do
   def changeset(auth_token, attrs) do
     auth_token
     |> cast(attrs, [:token, :revoked, :revoked_at])
-    |> validate_required([:token, :revoked, :revoked_at])
+    |> validate_required([:token, :revoked])
     |> unique_constraint(:token)
   end
 end

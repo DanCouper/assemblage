@@ -28,7 +28,7 @@ defmodule Assemblage.Accounts do
   import Ecto.Query, warn: false
   alias Assemblage.Repo
 
-  alias Assemblage.Accounts.{User, Authenticator, AuthToken}
+  alias Assemblage.Accounts.{Authenticator, AuthToken, User}
 
   @doc """
   Registers (creates) a user
@@ -37,6 +37,59 @@ defmodule Assemblage.Accounts do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Update info held on the User struct itself, for example
+  the name field.
+  """
+  def update_user_info(user, params) do
+    if Map.has_key?(params, :credential) do
+      # Note that any attempt to update credentials via this function
+      # would fail silently anyway, as the association is not loaded in any case
+      {:error, "Attempt made to update credentials without validating"}
+    else
+      user
+      |> User.changeset(params)
+      |> Repo.update()
+    end
+  end
+
+  @doc """
+  Given a user, update the email held on the associated
+  Credential struct. To do so, a password must be given.
+  """
+  def update_user_email(user, new_email, password) do
+    with {:ok, user} <- check_password(user, password) do
+      user
+      |> User.update_changeset(%{credential: %{email: new_email}})
+      |> Repo.update()
+    end
+  end
+
+  @doc """
+  Given a user, update the password held on the associated
+  Credential struct. To do so, the current password must be given.
+  """
+  def update_user_password(user, new_password, current_password) do
+    with {:ok, user} <- check_password(user, current_password) do
+      user
+      |> User.update_changeset(%{credential: %{password: new_password}})
+      |> Repo.update()
+    end
+  end
+
+  @doc """
+  TODO
+  1. deleting a user should set a deleted flag on their struct to true.
+  2. the password should be cleared and the email hashed.
+  3. This means that there should be a revive user function
+  4. in the case that that is called, the email should be decoded and a
+     notification should be sent to force a password reset.
+  5. this is quite complex: a notification system needs to be in place first.
+  """
+  def delete_user(user) do
+    Repo.delete(user)
   end
 
   @doc """
@@ -49,14 +102,32 @@ defmodule Assemblage.Accounts do
   end
 
 
+  @doc """
+  TODO return a _User_ struct with the association loaded, not an AuthToken
+  struct. It is easier overall if these functions always return a user.
+  """
   def sign_in(email, password) do
     with user <- get_user_by_email(email),
-         {:ok, user} <- Comeonin.Bcrypt.check_pass(user, password) do
+         {:ok, user} <- check_password(user, password) do
       token = Authenticator.generate_token(user.id)
 
       user
-      |> Ecto.build_assoc(:auth_tokens, %{token: token})
+      |> Ecto.build_assoc(:auth_token, %{token: token})
       |> Repo.insert()
+    end
+  end
+
+  @doc """
+  TODO as above
+  """
+  def signed_in?(user) do
+    token_assoc = user |> Ecto.assoc(:auth_token) |> Repo.one()
+    IO.inspect token_assoc
+    case token_assoc do
+      %{token: nil} -> false
+      %{revoked: true} -> false
+      %{token: _token} -> true
+      _ -> false
     end
   end
 
@@ -64,5 +135,12 @@ defmodule Assemblage.Accounts do
     AuthToken
     |> Repo.get_by(%{token: token})
     |> Repo.delete()
+  end
+
+  def check_password(%User{credential: %{password_hash: password_hash}} = user, password) do
+    case Comeonin.Bcrypt.checkpw(password, password_hash) do
+      true -> { :ok, user }
+      false -> { :error, "Authentication failed for operation" }
+    end
   end
 end
