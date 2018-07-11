@@ -20,7 +20,7 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="main__wrapper main__footer">
-      <p>Some footer stuff</p>
+      <p>Some footer stuff. An example <a href="#">link</a>.</p>
     </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>

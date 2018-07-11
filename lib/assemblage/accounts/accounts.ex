@@ -31,12 +31,30 @@ defmodule Assemblage.Accounts do
   alias Assemblage.Accounts.{Authenticator, AuthToken, User}
 
   @doc """
-  Registers (creates) a user
+  IMPORTANT this is for testing purposes **only**: I need at least one query
+  built in so I can check my absinthe logic.
   """
-  @spec register_user(map()) :: {:ok, User.t()} | {:error, String.t()}
-  def register_user(attrs \\ %{}) do
+  @spec list_users :: [User.t()]
+  def list_users do
+    User
+    |> Repo.all()
+    |> Repo.preload([:auth_token, :credential])
+  end
+
+  @doc """
+  Registers (creates) a user. Accepts a map of the required information. Note
+  that defaults of `nil` are used to ensure that registration failures
+  generate nice changeset errors, rather than having the function explode immediately.
+
+  FIXME authorise a user as soon as they have registered
+  """
+  @spec register(%{name: String.t(), email: String.t(), password: String.t()}) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  def register(registration_attrs) do
+    defaults = %{name: nil, email: nil, password: nil}
+    %{name: name, email: email, password: password} = Map.merge(defaults, registration_attrs)
+
     %User{}
-    |> User.registration_changeset(attrs)
+    |> User.registration_changeset(%{name: name, credential: %{email: email, password: password}})
     |> Repo.insert()
   end
 
@@ -65,7 +83,7 @@ defmodule Assemblage.Accounts do
   def update_user_email(user, new_email, password) do
     with {:ok, user} <- check_password(user, password) do
       user
-      |> User.update_changeset(%{credential: %{email: new_email}})
+      |> User.credential_changeset(%{credential: %{email: new_email}})
       |> Repo.update()
     end
   end
@@ -78,7 +96,7 @@ defmodule Assemblage.Accounts do
   def update_user_password(user, new_password, current_password) do
     with {:ok, user} <- check_password(user, current_password) do
       user
-      |> User.update_changeset(%{credential: %{password: new_password}})
+      |> User.credential_changeset(%{credential: %{password: new_password}})
       |> Repo.update()
     end
   end
@@ -99,50 +117,42 @@ defmodule Assemblage.Accounts do
 
   @doc """
   Get a User based on the email stored in their linked credentials.
-
-  FIXME spec is incorrect: Need to return correct error tuples if the lookup fails
   """
-  # @spec get_user_by_email(String.t()) :: {:ok, User.t()} | {:error, String.t()}
+  @spec get_user_by_email(String.t()) :: nil | User.t()
   def get_user_by_email(email) do
-    # FIXME deal with lookup failing, will just get `nil` as things stand
-    from(u in User, join: c in assoc(u, :credential), where: c.email == ^email)
+    email
+    |> User.by_email()
     |> Repo.one()
-    |> Repo.preload(:credential)
-  end
-
-  @doc """
-  Get a User based on their auth token.
-
-  FIXME spec is incorrect: Need to return correct error tuples if the lookup fails
-  """
-  # @spec get_user_by_token(String.t()) :: {:ok, User.t()} | {:error, String.t()}
-  def get_user_by_token(token) do
-    case Authenticator.verify_token(token) do
-      {:ok, _} ->
-        # FIXME deal with lookup failing, will just get `nil` as things stand
-        from(u in User, join: c in assoc(u, :auth_token), where: c.token == ^token)
-        |> Repo.one()
-        |> Repo.preload(:auth_token)
-
-      {:error, reason} ->
-        # FIXME just stringify the reason for now
-        {:error, to_string(reason)}
-    end
+    |> Repo.preload([:credential, :auth_token])
   end
 
 
   @doc """
-  TODO return a _User_ struct with the association loaded, not an AuthToken
-  struct. It is easier overall if these functions always return a user.
+  If a user gives a valid email & password, sign them in by generating an
+  an auth token and saving it on the assiociated struct.
   """
+  @spec sign_in(String.t(), String.t()) :: {:ok, User.t()} | {:error, String.t()}
   def sign_in(email, password) do
     with user <- get_user_by_email(email),
          {:ok, user} <- check_password(user, password) do
       token = Authenticator.generate_token(user.id)
 
       user
-      |> Ecto.build_assoc(:auth_token, %{token: token})
-      |> Repo.insert()
+      |> User.token_changeset(%{auth_token: %{token: token}})
+      |> Repo.update()
+    end
+  end
+
+  @doc """
+  Different from signing in: given a token, verifies it and grabs the
+  associated user.
+  """
+  def verify(token) do
+    with {:ok, id} <- Authenticator.verify_token(token) do
+      user = User
+        |> Repo.get(id)
+        |> Repo.preload([:auth_token, :credential])
+      {:ok, user}
     end
   end
 

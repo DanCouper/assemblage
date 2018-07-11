@@ -9,13 +9,15 @@
  ***************************************************/
 
 :root {
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --primary-color: #000000;
-  --secondary-color: #000000;
-  --heading-color: #000000;
-  --link-color: #000000;
-  --border-color: #000000;
+  /* --background-color: #ffffff; */
+  --background-color: #fefefe;
+  --text-color: #090E0A;
+  --primary-color: #090E0A;
+  --secondary-color: #090E0A;
+  --heading-color: #090E0A;
+  --link-color: #1c5979;
+  --link-fade-color: #5BAFCA;
+  --border-color: #090E0A;
 
   --primary-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --secondary-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -42,6 +44,17 @@ body {
   min-height: 100vh;
 }
 
+a:link,
+a:visited {
+  color: var(--link-color);
+}
+
+a:focus,
+a:hover,
+a:active {
+  color: var(--link-fade-color);
+}
+
 /***************************************************
  * MODULES - Main content blocks
  ***************************************************/
@@ -57,7 +70,7 @@ body {
 .main__header__branding {
   flex: 1;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .main__content {

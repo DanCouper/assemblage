@@ -1,9 +1,9 @@
 defmodule Assemblage.Accounts.User do
   use Ecto.Schema
+  import Ecto.Query, warn: false
   import Ecto.Changeset
 
-  alias Assemblage.Accounts.AuthToken
-  alias Assemblage.Accounts.Credential
+  alias Assemblage.Accounts.{ User, AuthToken, Credential }
 
   schema "users" do
     field :name, :string
@@ -20,10 +20,16 @@ defmodule Assemblage.Accounts.User do
     |> cast_assoc(:credential, with: &Credential.changeset/2, required: true)
   end
 
-  def update_changeset(user, params) do
+  def credential_changeset(user, params) do
     user
     |> changeset(params)
     |> cast_assoc(:credential, with: &Credential.update_changeset/2, required: true)
+  end
+
+  def token_changeset(user, params) do
+    user
+    |> changeset(params)
+    |> cast_assoc(:auth_token, with: &AuthToken.changeset/2, required: true)
   end
 
   @doc false
@@ -33,5 +39,9 @@ defmodule Assemblage.Accounts.User do
     |> validate_required([:name])
     |> validate_length(:name, min: 1, max: 100)
     |> unique_constraint(:name)
+  end
+
+  def by_email(email) do
+    from(u in User, join: c in assoc(u, :credential), where: c.email == ^email)
   end
 end

@@ -11,6 +11,7 @@ defmodule AssemblageWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug AssemblageWeb.Context
   end
 
   scope "/api" do
