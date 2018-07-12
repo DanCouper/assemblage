@@ -17,7 +17,12 @@ defmodule AssemblageWeb.Resolvers.Accounts do
     end
   end
 
-  def sign_out(_, %{user: user}, _) do
-    Accounts.sign_out(user)
+  def sign_out(_, _, %{context: context}) do
+    case context do
+      %{current_user: user} ->
+        {:ok, Accounts.sign_out(user)}
+      _ ->
+        {:error, "No user currently signed in, cannot sign out."}
+      end
   end
 end
