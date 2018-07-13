@@ -186,10 +186,10 @@ defmodule Assemblage.Accounts do
       b. look at updating via the user (assoc with AuthToken) - currently this will
         just blow away the AuthToken struct without any reference to the User it belongs to.
   """
-  @spec sign_out(String.t()) :: {:ok, AuthToken.t()} | {:error, String.t()}
-  def sign_out(token) do
+  @spec sign_out(User.t()) :: {:ok, AuthToken.t()} | {:error, String.t()}
+  def sign_out(user) do
     AuthToken
-    |> Repo.get_by(%{token: token})
+    |> Repo.get_by(%{user_id: user.id})
     |> Repo.delete()
   end
 
