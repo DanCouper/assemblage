@@ -26,6 +26,7 @@ defmodule Assemblage.Accounts do
   """
 
   import Ecto.Query, warn: false
+
   alias Assemblage.Repo
 
   alias Assemblage.Accounts.{Authenticator, AuthToken, User}
@@ -48,7 +49,8 @@ defmodule Assemblage.Accounts do
 
   FIXME authorise a user as soon as they have registered
   """
-  @spec register(%{name: String.t(), email: String.t(), password: String.t()}) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  @spec register(%{name: String.t(), email: String.t(), password: String.t()}) ::
+          {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def register(registration_attrs) do
     defaults = %{name: nil, email: nil, password: nil}
     %{name: name, email: email, password: password} = Map.merge(defaults, registration_attrs)
@@ -79,7 +81,8 @@ defmodule Assemblage.Accounts do
   Given a user, update the email held on the associated
   Credential struct. To do so, a password must be given.
   """
-  @spec update_user_email(User.t(), String.t(), String.t()) :: {:ok, User.t()} | {:error, String.t()}
+  @spec update_user_email(User.t(), String.t(), String.t()) ::
+          {:ok, User.t()} | {:error, String.t()}
   def update_user_email(user, new_email, password) do
     with {:ok, user} <- check_password(user, password) do
       user
@@ -92,7 +95,8 @@ defmodule Assemblage.Accounts do
   Given a user, update the password held on the associated
   Credential struct. To do so, the current password must be given.
   """
-  @spec update_user_password(User.t(), String.t(), String.t()) :: {:ok, User.t()} | {:error, String.t()}
+  @spec update_user_password(User.t(), String.t(), String.t()) ::
+          {:ok, User.t()} | {:error, String.t()}
   def update_user_password(user, new_password, current_password) do
     with {:ok, user} <- check_password(user, current_password) do
       user
@@ -126,7 +130,6 @@ defmodule Assemblage.Accounts do
     |> Repo.preload([:credential, :auth_token])
   end
 
-
   @doc """
   If a user gives a valid email & password, sign them in by generating an
   an auth token and saving it on the assiociated struct.
@@ -149,9 +152,11 @@ defmodule Assemblage.Accounts do
   """
   def verify(token) do
     with {:ok, id} <- Authenticator.verify_token(token) do
-      user = User
+      user =
+        User
         |> Repo.get(id)
-        |> Repo.preload([:auth_token, :credential])
+        |> Repo.preload([auth_token: [:token, :revoked], credential: [:email]])
+
       {:ok, user}
     end
   end
@@ -193,8 +198,8 @@ defmodule Assemblage.Accounts do
     # Because the credentials are not stored directly ono the User, Comeonin's handy
     # `check_pass` function, which does exactly the following, will not work
     case Comeonin.Bcrypt.checkpw(password, password_hash) do
-      true -> { :ok, user }
-      false -> { :error, "Authentication failed for operation" }
+      true -> {:ok, user}
+      false -> {:error, "Authentication failed for operation"}
     end
   end
 end

@@ -1,4 +1,8 @@
 defmodule Assemblage.Accounts.Authenticator do
+  @moduledoc """
+  Basic wrapper for Phoenix' sign/verify functions. This is just
+  a facade, nothing else.
+  """
   # FIXME These values **must** be in a configuration file
   # see https://hexdocs.pm/phoenix/Phoenix.Token.html
   # NOTE Avoiding directly linking `assemblage` and `assemblage_web`:

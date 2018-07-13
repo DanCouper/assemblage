@@ -1,16 +1,27 @@
 defmodule Assemblage.Accounts.User do
+  @moduledoc """
+  The central plank of the  accounts context.
+
+  The base struct holds only basic, publicly accessible information, with
+  credentials and tokens held on associated tables.
+
+  Note the specific changeset functions: because of the structure of the
+  data, atomic operations are necessary for specific queries, loading in
+  associations as and when needed.
+  """
   use Ecto.Schema
+
   import Ecto.Query, warn: false
   import Ecto.Changeset
 
-  alias Assemblage.Accounts.{ User, AuthToken, Credential }
+  alias Assemblage.Accounts.{User, AuthToken, Credential}
 
   schema "users" do
-    field :name, :string
+    field(:name, :string)
     # NOTE just keep as `has_one` until want to
     # test/implement other methods.
-    has_one :credential, Credential, on_replace: :update
-    has_one :auth_token, AuthToken
+    has_one(:credential, Credential, on_replace: :update)
+    has_one(:auth_token, AuthToken)
     timestamps()
   end
 

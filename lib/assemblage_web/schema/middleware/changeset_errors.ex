@@ -1,6 +1,4 @@
 defmodule AssemblageWeb.Schema.Middleware.ChangesetErrors do
-  @behaviour Absinthe.Middleware
-
   @moduledoc """
   Inside Absinthe's resolution structs, the two most significant keys are
   `:value` and `:errors`. `:value` holds the value that will eventually
@@ -19,6 +17,10 @@ defmodule AssemblageWeb.Schema.Middleware.ChangesetErrors do
   errors that crop up, allowing specific feedback to be provided at point
   of failure.
   """
+
+  @behaviour Absinthe.Middleware
+
+  require Logger
 
   def call(res, _) do
     with %{errors: [%Ecto.Changeset{} = changeset]} <- res do

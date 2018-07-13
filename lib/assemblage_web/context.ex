@@ -15,15 +15,19 @@ defmodule AssemblageWeb.Context do
   set up.
   """
   @behaviour Plug
+
   import Plug.Conn
 
   alias Assemblage.Accounts
+
+  require Logger
 
   def init(opts), do: opts
 
   def call(conn, _) do
     context = build_context(conn)
-    IO.inspect [context: context]
+    Logger.info("Current context: #{inspect(context)}")
+
     Absinthe.Plug.put_options(conn, context: context)
   end
 

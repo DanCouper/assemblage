@@ -49,8 +49,8 @@ defmodule Assemblage.MixProject do
       # Not usre if this will be needed at all, but hey ho:
       {:absinthe_ecto, github: "absinthe-graphql/absinthe_ecto"},
       {:absinthe_phoenix, github: "absinthe-graphql/absinthe_phoenix"},
-      # Just to actually let Absinthe work - Phoenix is now using Jason
-      # {:poison, "~> 3.1"},
+      # Dev tooling
+      {:credo, "~> 0.9", only: :dev},
     ]
   end
 

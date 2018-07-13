@@ -1,5 +1,14 @@
 defmodule Assemblage.Accounts.Credential do
+  @moduledoc """
+  Stores a users credentials, for example an email and a password hash.
+
+  This is kept seperate from the user struct itself; the values in it
+  should not be exposed unless explicitly requested. Note that this
+  structuring does complicate reads/write code somewhat, but that
+  complication seems a fair exchange for the added security.
+  """
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Assemblage.Accounts.User
@@ -26,6 +35,7 @@ defmodule Assemblage.Accounts.Credential do
   # Discrete operation to update email: to do so a user
   # will need to go through security measures, makes sense to
   # keep  the changeset functionality atomic.
+  @doc false
   def update_changeset(credential, %{email: email} = params) do
     credential
     |> cast(params, [:email])
@@ -36,6 +46,7 @@ defmodule Assemblage.Accounts.Credential do
   # Discrete operation to update password: to do so a user
   # will need to go through security measures, makes sense to
   # keep  the changeset functionality atomic.
+  @doc false
   def update_changeset(credential, %{password: _} = params) do
     credential
     |> cast(params, [:password])

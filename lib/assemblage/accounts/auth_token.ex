@@ -1,4 +1,15 @@
 defmodule Assemblage.Accounts.AuthToken do
+  @moduledoc """
+  Bearer token functionality for users. Allows easy
+  creation/destruction of auth tokens, and storing on
+  the backend makes testing easier + simplifies HTML
+  route authentication.
+
+  API auth could be implemented fully on the client-side,
+  but Assemblage is envisaged as having both an API -> JS app
+  frontend for editorial actions, and an HTML frontend for general
+  public viewing.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
